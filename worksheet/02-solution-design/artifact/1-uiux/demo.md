@@ -35,7 +35,8 @@ Demo minh họa cách giao diện giảm rủi ro T-01: AI không được biế
 │ trả và trao đổi với người tin cậy trước khi  │
 │ quyết định.                                  │
 │                                              │
-│ [Xem checklist an toàn] [Nói chuyện người thật]│
+│ [Xem checklist an toàn] [Nói chuyện vởi      |
+|                              tổng đài]       |
 └──────────────────────────────────────────────┘
 ```
 
