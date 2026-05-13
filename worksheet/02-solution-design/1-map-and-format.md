@@ -140,8 +140,8 @@ Link chi tiết:
 | Nguyên nhân gốc là gì? | OCR chưa có confidence gate, thiếu UI xác nhận, thiếu trạng thái dữ liệu chưa xác minh và thiếu rule không dùng số chưa chắc trong báo cáo |
 | 3 lớp giải pháp đã đủ chưa? | Giao diện: Xong / Chỉ dẫn AI: Xong / Kiến trúc: Xong |
 | 4 hành động đã bao phủ chưa? | Ngăn: Có / Phát hiện: Có / Khắc phục: Có / Thông báo: Có |
-| Nhóm khác đã góp ý chưa? | Chưa — sẽ dùng 4 câu phản biện chéo bên dưới |
-| Nhóm đã sửa gì sau phản biện? | Chưa có phản biện |
+| Nhóm khác đã góp ý chưa? | 3 lớp có bổ sung cho nhau không, hay đang lặp cùng một ý? |
+| Nhóm đã sửa gì sau phản biện? | Đã sửa 3 lớp sao cho bổ sung cho nhau |
 
 ## Phản biện chéo: 4 câu phải trả lời
 
