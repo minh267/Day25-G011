@@ -13,22 +13,22 @@ Xem `../../1-map-and-format.md` Phần A.
 
 ## 1. Giải pháp là gì?
 
-Thêm bộ luật system prompt cho trợ lý chi tiêu: AI chỉ được phân tích dữ liệu chi tiêu, không được quyết định vay nợ, trả góp, đầu tư hoặc cắt khoản thiết yếu thay user. Khi gặp câu hỏi thiếu tiền/vay app tín dụng/cắt tiền học, tiền thuốc, tiền nhà, AI phải từ chối quyết định thay user, hỏi lại dữ liệu còn thiếu, nêu rủi ro và hướng user sang người thật hoặc người tin cậy.
+Thêm bộ luật system prompt cho trợ lý chi tiêu: AI chỉ được dùng số tiền trích xuất từ ảnh hóa đơn như dữ liệu chắc chắn khi OCR confidence đủ cao và không có tín hiệu bất thường. Khi ảnh mờ, số tiền có nhiều cách đọc, hoặc số tiền lệch mạnh so với lịch sử/danh mục, AI phải hỏi user xác nhận trước khi lưu hoặc trước khi dùng trong báo cáo tháng.
 
 ---
 
 ## 2. Vì sao sửa ở lớp chỉ dẫn AI?
 
-- AI có xu hướng helpful quá mức và trả lời như chuyên gia tài chính.
-- AI cần luật rõ: khi nào phân tích, khi nào hỏi lại, khi nào từ chối, khi nào chuyển sang người thật.
-- Prompt là lớp có thể sửa nhanh để giảm lỗi trong khi kiến trúc và giao diện vẫn đang hoàn thiện.
+- AI có xu hướng trả lời quá chắc, biến số OCR chưa kiểm chứng thành dữ liệu đã đúng.
+- AI cần luật rõ: khi nào được lưu, khi nào phải hỏi lại, khi nào phải nói "chưa xác minh", và khi nào phải tách giao dịch khỏi tổng chắc chắn.
+- Prompt là lớp có thể sửa nhanh để giảm lỗi diễn đạt trong khi kiến trúc OCR confidence và giao diện xác nhận vẫn đang hoàn thiện.
 
 **Hành động phòng vệ chính**:
 
 - [x] Ngăn câu trả lời sai ngay từ đầu
-- [x] Bắt buộc nêu dữ liệu đang dùng và dữ liệu còn thiếu
-- [x] Từ chối quyết định vay/cắt khoản thiết yếu
-- [x] Chuyển người thật khi vượt phạm vi hoặc có stress/nợ cao
+- [x] Bắt buộc nêu dữ liệu đang dùng và dữ liệu còn thiếu/chưa xác minh
+- [x] Hỏi lại user khi OCR confidence thấp hoặc số tiền bất thường
+- [x] Không cộng giao dịch chờ xác nhận vào tổng chi chắc chắn
 
 ---
 
@@ -39,9 +39,9 @@ Thêm bộ luật system prompt cho trợ lý chi tiêu: AI chỉ được phân
 Demo có:
 
 - Luật chính cho AI
-- Mẫu câu khi thiếu dữ liệu
-- Mẫu câu khi cần chuyển sang người thật
-- Ví dụ hỏi đáp cho T-01, T-02, T-07, T-12
+- Mẫu câu khi OCR chưa chắc
+- Mẫu câu khi báo cáo có giao dịch chờ xác nhận
+- Ví dụ hỏi đáp cho T-01 và biến thể hóa đơn mờ/số tiền bất thường
 - Bảng kết quả thử lại
 
 ---
@@ -50,11 +50,11 @@ Demo có:
 
 **Có thể gây vấn đề gì?**
 
-AI có thể từ chối quá nhiều hoặc câu trả lời trở nên cứng, khiến user không nhận được hỗ trợ hữu ích khi chỉ muốn xem khoản chi.
+AI có thể hỏi xác nhận quá nhiều, làm chậm thao tác lưu hóa đơn nhanh, hoặc nói quá dài về độ tin cậy khiến user khó chịu.
 
 **Nhóm giảm vấn đề đó bằng cách nào?**
 
-Tách từ chối cứng và từ chối mềm. Chỉ từ chối cứng với quyết định vay, đầu tư, cắt khoản thiết yếu. Với câu hỏi bình thường, AI vẫn phân tích dữ liệu chi tiêu, nhưng phải nói rõ dữ liệu thiếu và không biến phân tích thành mệnh lệnh.
+Tách xác nhận bắt buộc và xác nhận nhẹ. Chỉ bắt buộc xác nhận khi confidence thấp, ảnh mờ, có nhiều số tiền khả nghi hoặc outlier lớn. Với hóa đơn rõ, AI vẫn hỗ trợ lưu nhanh nhưng phải lưu kèm nguồn ảnh và cho phép sửa sau.
 
 ---
 

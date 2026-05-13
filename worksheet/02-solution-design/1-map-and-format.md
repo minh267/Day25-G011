@@ -21,9 +21,9 @@ Ba lớp giải pháp nằm trong thư mục `artifact/`:
 
 | Lớp | Thư mục | Vai trò |
 |---|---|---|
-| Giao diện | `artifact/1-uiux/` | Cảnh báo, làm rõ giới hạn, nút chuyển sang người thật |
-| Chỉ dẫn AI | `artifact/2-prompt/` | Hỏi lại, từ chối quyết định thay user, giữ boundary |
-| Kiến trúc dữ liệu | `artifact/3-architecture/` | Phân loại rủi ro, kiểm tra dữ liệu, chặn câu trả lời tài chính nhạy cảm, ghi log |
+| Giao diện | `artifact/1-uiux/` | Hiển thị số tiền OCR, mức tin cậy, trạng thái cần xác nhận và nút sửa số tiền |
+| Chỉ dẫn AI | `artifact/2-prompt/` | Hỏi lại khi ảnh mờ/số tiền bất thường, không khẳng định số chưa xác minh |
+| Kiến trúc dữ liệu | `artifact/3-architecture/` | OCR confidence, kiểm tra bất thường, trạng thái giao dịch chờ xác nhận, ghi log |
 
 ## Thông tin nhóm
 
@@ -38,41 +38,41 @@ Ba lớp giải pháp nằm trong thư mục `artifact/`:
 ### Rủi ro chính được chọn
 
 - **ID tình huống**: T-01
-- **Mô tả ngắn**: Khi user còn ít tiền, có tiền học cho con và trả góp điện thoại, AI có xu hướng đưa lời khuyên tài chính vượt phạm vi như "nên vay app tín dụng 5 triệu", gây rủi ro mất tiền, tăng nợ và áp lực tài chính cho user cùng gia đình.
+- **Mô tả ngắn**: User chụp hóa đơn giấy sau bữa ăn tối với bạn bè để lưu nhanh khoản chi. Tổng bill là 188.000đ nhưng AI/OCR đọc nhầm thành 138.000đ hoặc 1.888.000đ, tự lưu vào danh mục ăn uống và dùng số sai khi user hỏi tổng chi cuối tháng.
 - **Mức độ**: Nặng
-- **Điểm rủi ro**: 25
-- **Vì sao chọn tình huống này**: Đây là rủi ro trọng tâm từ Day 24, có tác động thật ngoài đời và user có thể hành động ngay. Nếu AI khuyên vay/cắt khoản thiết yếu, hậu quả có thể khó đảo ngược vì user đã vay tiền, chịu lãi/phí hoặc ảnh hưởng đến tiền học, thuốc, ăn uống của gia đình.
+- **Điểm rủi ro**: 16
+- **Vì sao chọn tình huống này**: Đây là rủi ro rất sát lõi sản phẩm: ghi chi tiêu bằng ảnh hóa đơn. Nếu app lưu số OCR sai như dữ liệu chắc chắn, báo cáo tháng và tổng chi ăn uống bị lệch, user có thể hiểu sai hành vi chi tiêu, chỉnh ngân sách sai hoặc mất niềm tin vào app.
 
 ### Tìm nguyên nhân gốc
 
-- [ ] Thiếu nguồn dữ liệu đúng.
+- [x] Thiếu nguồn dữ liệu đúng.
 - [x] AI đoán khi không biết.
 - [x] Giao diện khiến người dùng tin quá mức.
-- [x] Quy trình thiếu người duyệt hoặc thiếu bước chuyển sang người thật.
+- [x] Quy trình thiếu bước xác nhận của người dùng khi OCR không chắc.
 - [x] Không có theo dõi sau khi ra mắt.
-- [x] Khác: Ranh giới sản phẩm chưa đủ rõ giữa "phân tích chi tiêu" và "tư vấn tài chính/quyết định vay nợ".
+- [x] Khác: Chưa tách trạng thái "đã xác minh" và "chờ xác nhận" cho số tiền trích xuất từ hóa đơn.
 
 ### Bảng nối nguyên nhân với tầng sửa
 
 | Nguyên nhân gốc | Tầng ưu tiên sửa | Lớp giải pháp liên quan |
 |---|---|---|
-| AI suy diễn vai trò từ phân tích chi tiêu sang tư vấn vay nợ | Chỉ dẫn hệ thống / luật từ chối / hỏi lại | `2-prompt` là chính |
-| User thấy AI nằm trong app có dữ liệu thật nên dễ tin như chuyên gia tài chính | Giao diện cảnh báo / nhãn giới hạn / CTA hỏi người thật | `1-uiux` là chính |
-| Câu hỏi nhạy cảm về vay, nợ, trả góp, khoản thiết yếu chưa được phân loại trước khi AI trả lời | Classifier rủi ro / rule-based gate / escalation | `3-architecture` là chính |
-| Dữ liệu thu nhập, nợ, lãi/phí chưa đủ nhưng AI vẫn có thể nói chắc | Kiểm tra dữ liệu thiếu / confidence state | `3-architecture` + `2-prompt` |
-| Lỗi có thể lặp lại nhưng team không biết | Log tình huống rủi ro cao / review hàng tuần | `3-architecture` |
+| OCR đọc số tiền trên hóa đơn không chắc nhưng hệ thống vẫn lưu như giao dịch đúng | Confidence threshold / trạng thái chờ xác nhận / rule hỏi lại | `3-architecture` là chính |
+| User thấy giao dịch đã được lưu nên dễ tin số tiền là đúng | UI hiển thị số tiền đọc được, mức tin cậy, ảnh gốc và nút sửa/xác nhận | `1-uiux` là chính |
+| AI trả lời báo cáo cuối tháng bằng số liệu chưa xác minh | Prompt bắt buộc nêu dữ liệu chưa chắc, không cộng giao dịch chờ xác nhận vào tổng chắc chắn | `2-prompt` + `3-architecture` |
+| Số tiền bất thường so với lịch sử ăn uống nhưng không bị phát hiện | Outlier check theo danh mục, merchant, lịch sử user | `3-architecture` |
+| Lỗi OCR có thể lặp lại nhưng team không biết | Log OCR confidence thấp, số tiền user sửa, false positive/false negative | `3-architecture` |
 
 ### Kết luận Phần A
 
-**Nguyên nhân gốc**: AI chưa có ranh giới đủ cứng giữa hỗ trợ phân tích chi tiêu và tư vấn tài chính cá nhân. Khi user áp lực, thiếu tiền hoặc hỏi vay/cắt khoản thiết yếu, AI có thể cố "helpful" quá mức, đưa quyết định thay user dù dữ liệu không đủ và rủi ro cao.
+**Nguyên nhân gốc**: Luồng nhập hóa đơn chưa coi OCR là dữ liệu không chắc. Số tiền đọc từ ảnh mờ hoặc bất thường được lưu thẳng vào giao dịch và báo cáo, trong khi thiếu trạng thái confidence, thiếu bước user xác nhận, và thiếu rule buộc AI nói rõ phần nào chưa kiểm chứng.
 
-**Tầng chính cần sửa**: Chỉ dẫn AI + kiến trúc phân loại rủi ro. Giao diện là lớp giảm hại cuối để user thấy giới hạn và có đường chuyển sang người thật.
+**Tầng chính cần sửa**: Kiến trúc dữ liệu + giao diện xác nhận. Chỉ dẫn AI là lớp bổ sung để câu trả lời không biến số OCR chưa chắc thành báo cáo chắc chắn.
 
 **Vì sao cần 3 lớp giải pháp**:
 
-- Lớp giao diện: Thông báo rõ AI không quyết định vay/cắt khoản thiết yếu thay user, hiển thị cảnh báo khi câu hỏi rủi ro cao và có nút "Nói chuyện với người thật / xem checklist an toàn".
-- Lớp chỉ dẫn AI: Ngăn AI khuyên vay/cắt khoản thiết yếu ngay từ câu trả lời; bắt AI hỏi lại dữ liệu còn thiếu, nêu rủi ro, từ chối quyết định thay user.
-- Lớp kiến trúc dữ liệu: Phân loại câu hỏi vay/nợ/trả góp/khoản thiết yếu là rủi ro cao trước khi gọi model; áp rule chặn, kiểm tra dữ liệu thiếu, ghi log và chuyển luồng hỗ trợ.
+- Lớp giao diện: Cho user thấy ảnh hóa đơn, số tiền AI đọc được, mức tin cậy, lý do cần xác nhận và nút sửa nhanh trước khi lưu.
+- Lớp chỉ dẫn AI: Buộc AI hỏi lại khi ảnh mờ/số tiền bất thường; khi báo cáo tháng phải tách số đã xác minh khỏi số đang chờ xác nhận.
+- Lớp kiến trúc dữ liệu: Lưu confidence của OCR, chạy kiểm tra bất thường, không đưa giao dịch chưa xác nhận vào tổng "chắc chắn", ghi log các lần user sửa số tiền.
 
 ---
 
@@ -86,9 +86,9 @@ Ba lớp giải pháp nằm trong thư mục `artifact/`:
 
 **Lý do chọn demo**
 
-- Giao diện: ASCII UI đủ nhanh để thể hiện trạng thái bình thường, trạng thái rủi ro cao, cảnh báo và nút chuyển sang người thật.
-- Chỉ dẫn AI: Prompt + ví dụ hỏi đáp giúp kiểm tra trực tiếp T-01, T-02, T-07, T-12.
-- Kiến trúc dữ liệu: Sơ đồ ASCII giúp thấy rõ câu hỏi đi qua classifier, risk gate, data check, model và logging như thế nào.
+- Giao diện: ASCII UI đủ nhanh để thể hiện trạng thái bình thường, trạng thái OCR không chắc, cảnh báo và nút xác nhận/sửa số tiền.
+- Chỉ dẫn AI: Prompt + ví dụ hỏi đáp giúp kiểm tra trực tiếp T-01 và các biến thể hóa đơn mờ, số tiền bất thường, báo cáo tháng.
+- Kiến trúc dữ liệu: Sơ đồ ASCII giúp thấy rõ ảnh hóa đơn đi qua OCR, confidence check, outlier check, trạng thái chờ xác nhận, model và logging như thế nào.
 
 ---
 
@@ -96,7 +96,7 @@ Ba lớp giải pháp nằm trong thư mục `artifact/`:
 
 ### Lớp 1 — Giao diện (`artifact/1-uiux/`)
 
-- **Cách tiếp cận**: Thêm trạng thái "Câu hỏi tài chính nhạy cảm", cảnh báo ngắn dưới câu trả lời, vùng "AI có thể giúp / AI không thể quyết định", và nút chuyển sang người thật hoặc checklist an toàn trước khi user hành động.
+- **Cách tiếp cận**: Thêm trạng thái "Cần xác nhận số tiền", hiển thị ảnh hóa đơn gốc, số tiền AI đọc được, mức tin cậy, cảnh báo số tiền bất thường và nút xác nhận/sửa trước khi lưu.
 - **Hành động phòng vệ bao phủ**: Thông báo / Phát hiện / Khắc phục
 - **Demo**: `artifact/1-uiux/demo.md`
 - **Trạng thái**: Xong
@@ -108,8 +108,8 @@ Link chi tiết:
 
 ### Lớp 2 — Chỉ dẫn AI (`artifact/2-prompt/`)
 
-- **Cách tiếp cận**: Thêm luật từ chối quyết định vay nợ/cắt khoản thiết yếu, bắt buộc hỏi lại dữ liệu thiếu, nêu rủi ro lãi/phí/hạn trả, và chuyển user sang người tin cậy/chuyên gia khi có stress/nợ cao.
-- **Hành động phòng vệ bao phủ**: Ngăn / Từ chối / Hỏi lại / Dẫn nguồn nội bộ về dữ liệu đang có
+- **Cách tiếp cận**: Thêm luật không khẳng định số tiền OCR khi ảnh mờ, confidence thấp hoặc số tiền bất thường; bắt buộc hỏi lại user xác nhận; khi tổng hợp tháng phải nêu giao dịch nào chưa xác minh.
+- **Hành động phòng vệ bao phủ**: Ngăn / Hỏi lại / Dẫn nguồn nội bộ về dữ liệu đang có
 - **Demo**: `artifact/2-prompt/demo.md`
 - **Trạng thái**: Xong
 
@@ -120,7 +120,7 @@ Link chi tiết:
 
 ### Lớp 3 — Kiến trúc dữ liệu (`artifact/3-architecture/`)
 
-- **Cách tiếp cận**: Thêm risk classifier nhận diện vay/nợ/trả góp/khoản thiết yếu/stress; nếu rủi ro cao thì kích hoạt safe response template, kiểm tra dữ liệu thiếu, ghi log, và đưa CTA chuyển người thật.
+- **Cách tiếp cận**: Thêm OCR confidence gate, kiểm tra số tiền bất thường theo lịch sử/danh mục, trạng thái `pending_confirmation`, rule không cộng số chưa xác minh vào tổng chắc chắn, và log các lần user sửa số tiền.
 - **Hành động phòng vệ bao phủ**: Ngăn / Phát hiện / Khắc phục / Theo dõi
 - **Demo**: `artifact/3-architecture/demo.md`
 - **Trạng thái**: Xong
@@ -136,8 +136,8 @@ Link chi tiết:
 
 | Câu hỏi | Trả lời |
 |---|---|
-| Rủi ro chính đã chọn là gì? | T-01 — AI khuyên vay app tín dụng khi user thiếu tiền và có khoản thiết yếu |
-| Nguyên nhân gốc là gì? | AI vượt phạm vi từ phân tích chi tiêu sang tư vấn tài chính, thiếu rule chặn, thiếu UI cảnh báo và thiếu risk gate |
+| Rủi ro chính đã chọn là gì? | T-01 — AI đọc sai hóa đơn 188.000 thành 138.000 hoặc 1.888.000 rồi lưu/báo cáo như dữ liệu đúng |
+| Nguyên nhân gốc là gì? | OCR chưa có confidence gate, thiếu UI xác nhận, thiếu trạng thái dữ liệu chưa xác minh và thiếu rule không dùng số chưa chắc trong báo cáo |
 | 3 lớp giải pháp đã đủ chưa? | Giao diện: Xong / Chỉ dẫn AI: Xong / Kiến trúc: Xong |
 | 4 hành động đã bao phủ chưa? | Ngăn: Có / Phát hiện: Có / Khắc phục: Có / Thông báo: Có |
 | Nhóm khác đã góp ý chưa? | Chưa — sẽ dùng 4 câu phản biện chéo bên dưới |

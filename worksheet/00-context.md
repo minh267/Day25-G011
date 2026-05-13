@@ -1,7 +1,7 @@
 ---
 title: 00 — Bối cảnh sản phẩm của nhóm
 section: Day 25 — dùng lại cho mọi cuộc trò chuyện với AI
-format: Nhóm
+format: Nhóm G011
 time: Điền 5 phút đầu buổi
 ---
 
@@ -33,12 +33,13 @@ Lý do: AI không tự nhớ bối cảnh giữa các cuộc trò chuyện. Nế
 **AI không được làm gì**
 
 - Không tự bịa giao dịch, số tiền, ngân sách còn lại hoặc kết luận khi dữ liệu thiếu, mờ, chưa đồng bộ.
+- Không tự động coi kết quả OCR/voice-to-text là đúng khi ảnh hóa đơn mờ, số tiền có nhiều cách đọc, hoặc số tiền bất thường so với lịch sử chi tiêu.
 - Không đưa lời khuyên tài chính vượt phạm vi như quyết định vay nợ, đảo nợ, đầu tư, trả góp hoặc cắt khoản thiết yếu thay người dùng.
 - Không chia sẻ hoặc hiển thị quá mức dữ liệu nhạy cảm như tên người thân, số tài khoản, khoản khám bệnh, khoản nợ riêng hoặc thông tin địa chỉ.
 
 **Vì sao có giới hạn này**
 
-Ứng dụng chứa dữ liệu tài chính cá nhân và có thể ảnh hưởng đến quyết định thật của người dùng. Nếu AI nói quá chắc, bịa số liệu hoặc khuyên vay/cắt khoản thiết yếu, người dùng có thể mất tiền, tăng áp lực nợ, ảnh hưởng đến gia đình và mất niềm tin vào sản phẩm.
+Ứng dụng chứa dữ liệu tài chính cá nhân và có thể ảnh hưởng đến quyết định thật của người dùng. Nếu AI nói quá chắc, đọc sai hóa đơn, bịa số liệu hoặc khuyên vay/cắt khoản thiết yếu, người dùng có thể hiểu sai tổng chi, lập ngân sách sai, mất tiền, ảnh hưởng đến gia đình và mất niềm tin vào sản phẩm.
 
 ---
 
@@ -47,14 +48,14 @@ Lý do: AI không tự nhớ bối cảnh giữa các cuộc trò chuyện. Nế
 - **Là ai**: Người đi làm, sinh viên mới đi làm hoặc người đã có gia đình, có thu nhập hằng tháng và muốn kiểm soát chi tiêu. Trình độ công nghệ ở mức phổ thông, quen dùng app ngân hàng/ví điện tử/app ghi chú.
 - **Họ hỏi AI khi nào**: Sau khi mua hàng, cuối ngày khi ghi lại khoản chi, cuối tuần/tháng khi xem báo cáo, hoặc khi đang lo vì sắp hết tiền, có nợ, phải đóng học phí/tiền nhà/tiền thuốc.
 - **Họ cần quyết định gì sau khi hỏi AI**: Có cần giảm khoản chi nào không, khoản nào đang vượt bình thường, có nên hoãn một khoản mua, nên kiểm tra lại giao dịch nào, hoặc có cần hỏi người thân/chuyên gia trước khi quyết định tài chính nhạy cảm.
-- **Khi nào họ dễ bị tổn thương / dễ hiểu sai**: Khi đang stress vì thiếu tiền, có nhiều khoản phải trả cùng lúc, có người thân phụ thuộc tài chính, dữ liệu giao dịch bị thiếu/chưa đồng bộ, hoặc AI trả lời bằng giọng điệu quá chắc chắn như một chuyên gia tài chính.
+- **Khi nào họ dễ bị tổn thương / dễ hiểu sai**: Khi đang vội ghi chi tiêu bằng ảnh hóa đơn/voice, hóa đơn bị mờ, số tiền có dấu chấm/phẩy dễ nhầm, dữ liệu giao dịch bị thiếu/chưa đồng bộ, đang stress vì thiếu tiền, có nhiều khoản phải trả cùng lúc, có người thân phụ thuộc tài chính, hoặc AI trả lời bằng giọng điệu quá chắc chắn như một báo cáo đã kiểm chứng.
 - **Họ thường tin AI đến mức nào**: Có thể tin khá cao vì AI nằm trong app có dữ liệu giao dịch thật, biểu đồ và báo cáo. Với quyết định nhạy cảm, cần người thật hoặc nguồn đáng tin cậy xác nhận.
 
 ---
 
 ## 4. Bối cảnh ngành
 
-- **Sự cố tương tự đã từng xảy ra**: Các hệ thống AI/chatbot có thể bịa thông tin, trả lời quá tự tin khi thiếu dữ liệu, chiều theo người dùng, hoặc đưa lời khuyên vượt phạm vi trong bối cảnh tài chính/sức khỏe/pháp lý. Với app chi tiêu, rủi ro gần nhất là AI khuyên vay nợ, cắt khoản thiết yếu, hoặc tạo cảm giác báo cáo tài chính chắc chắn dù dữ liệu chưa đủ.
+- **Sự cố tương tự đã từng xảy ra**: Các hệ thống AI/chatbot có thể bịa thông tin, trả lời quá tự tin khi thiếu dữ liệu, đọc sai dữ liệu đầu vào, chiều theo người dùng, hoặc đưa lời khuyên vượt phạm vi trong bối cảnh tài chính/sức khỏe/pháp lý. Với app chi tiêu, rủi ro gần nhất là AI đọc sai hóa đơn nhưng vẫn ghi nhận như giao dịch chắc chắn, làm báo cáo cuối tháng sai; ngoài ra còn có rủi ro khuyên vay nợ, cắt khoản thiết yếu, hoặc tạo cảm giác báo cáo tài chính chắc chắn dù dữ liệu chưa đủ.
 - **Quy định hoặc ràng buộc liên quan**: Bảo vệ dữ liệu cá nhân, bảo mật thông tin tài chính, yêu cầu minh bạch về giới hạn của AI, và ranh giới giữa phân tích chi tiêu cá nhân với tư vấn tài chính chuyên nghiệp.
 - **Nguồn chính thức nên ưu tiên**: Dữ liệu giao dịch gốc do người dùng nhập hoặc đồng bộ từ ngân hàng/ví điện tử, hóa đơn/ảnh gốc, lịch sử chỉnh sửa của người dùng, chính sách bảo mật của app, hướng dẫn hỗ trợ khách hàng, và nguồn thông tin chính thức về phí/lãi nếu người dùng tự cung cấp.
 
@@ -62,7 +63,7 @@ Lý do: AI không tự nhớ bối cảnh giữa các cuộc trò chuyện. Nế
 
 ## 5. Ghi chú thêm
 
-Primary failure từ Day 24: AI đưa lời khuyên tài chính vượt phạm vi khi người dùng hỏi cách xử lý thiếu tiền, vay nợ, trả góp hoặc cắt khoản chi thiết yếu. Ví dụ câu hỏi thật: "Tôi còn 1,5 triệu mà phải đóng tiền học cho con và trả góp điện thoại. Có nên vay app tín dụng 5 triệu không? Nói thẳng giúp tôi."
+Primary failure dùng cho Day 25: AI đọc sai số tiền trên hóa đơn giấy nhưng vẫn tự động lưu như dữ liệu đúng. Ví dụ tình huống thật: user vừa ăn tối với bạn bè, chụp hóa đơn có tổng 188.000đ; OCR/AI đọc nhầm thành 138.000đ hoặc 1.888.000đ, phân loại là ăn uống rồi đến cuối tháng user hỏi tổng số tiền đã tiêu. Hành vi an toàn là gắn độ tin cậy cho số tiền, hỏi lại khi ảnh không rõ hoặc số tiền bất thường, và không đưa số chưa xác minh vào báo cáo như dữ liệu chắc chắn.
 
 ---
 

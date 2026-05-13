@@ -5,7 +5,7 @@ format: ASCII UI sketch
 
 # demo.md — Demo giao diện
 
-Demo minh họa cách giao diện giảm rủi ro T-01: AI không được biến thành người quyết định vay nợ/cắt khoản thiết yếu thay user.
+Demo minh họa cách giao diện giảm rủi ro T-01: AI không được tự lưu số tiền OCR từ hóa đơn như dữ liệu chắc chắn khi ảnh mờ hoặc số tiền bất thường.
 
 ---
 
@@ -16,26 +16,22 @@ Demo minh họa cách giao diện giảm rủi ro T-01: AI không được biế
 │ Trợ lý chi tiêu                              │
 ├──────────────────────────────────────────────┤
 │ User                                         │
-│ Tôi còn 1,5 triệu mà phải đóng tiền học cho  │
-│ con và trả góp điện thoại. Có nên vay app    │
-│ tín dụng 5 triệu không? Nói thẳng giúp tôi. │
+│ Chụp hóa đơn ăn tối cùng bạn bè              │
+│ Ảnh hóa đơn: tổng tiền 188.000đ              │
+│ AI đang đọc được: 1.888.000đ                 │
 ├──────────────────────────────────────────────┤
-│ ⚠ Câu hỏi tài chính nhạy cảm                 │
-│ AI không quyết định vay nợ hoặc cắt khoản    │
-│ thiết yếu thay bạn.                          │
+│ ⚠ Cần xác nhận số tiền                       │
+│ Ảnh hóa đơn hơi mờ và số tiền 1.888.000đ     │
+│ cao bất thường so với các bữa ăn gần đây.    │
 │                                              │
-│ Tôi có thể giúp bạn rà soát:                 │
-│ ✓ Khoản bắt buộc: tiền học, thuốc, nhà ở     │
-│ ✓ Khoản có thể hoãn                          │
-│ ✓ Khoản không thiết yếu                      │
-│ ✓ Dữ liệu còn thiếu trước khi quyết định     │
+│ AI đề xuất:                                  │
+│ - Danh mục: Ăn uống                          │
+│ - Số tiền đọc được: 1.888.000đ               │
+│ - Độ tin cậy: thấp                           │
 │                                              │
-│ Tôi không thể nói "nên vay" hay "nên bỏ      │
-│ tiền học/thuốc". Hãy kiểm tra lãi, phí, hạn  │
-│ trả và trao đổi với người tin cậy trước khi  │
-│ quyết định.                                  │
+│ Vui lòng xác nhận trước khi lưu vào báo cáo. │
 │                                              │
-│ [Xem checklist an toàn] [Nói chuyện người thật]│
+│ [Lưu 188.000đ] [Sửa số tiền] [Xem ảnh gốc]   │
 └──────────────────────────────────────────────┘
 ```
 
@@ -44,14 +40,15 @@ Demo minh họa cách giao diện giảm rủi ro T-01: AI không được biế
 ## 2. Luồng màn hình
 
 ```text
-User hỏi về vay/nợ/trả góp/cắt khoản thiết yếu
-  -> UI nhận tín hiệu rủi ro cao từ hệ thống
-  -> Hiện banner "Câu hỏi tài chính nhạy cảm"
-  -> Câu trả lời AI chỉ hỗ trợ rà soát dữ liệu
+User chụp hóa đơn giấy
+  -> OCR đọc số tiền, ngày, cửa hàng, danh mục
+  -> Hệ thống kiểm tra confidence và số tiền bất thường
+  -> Nếu không chắc, hiện banner "Cần xác nhận số tiền"
+  -> Giao dịch ở trạng thái chờ xác nhận, chưa cộng vào tổng chắc chắn
   -> User chọn:
-      -> Xem checklist an toàn
-      -> Nói chuyện người thật / người tin cậy
-      -> Quay lại xem dữ liệu chi tiêu
+      -> Lưu số tiền đúng
+      -> Sửa số tiền
+      -> Xem ảnh gốc
 ```
 
 ---
@@ -60,19 +57,19 @@ User hỏi về vay/nợ/trả góp/cắt khoản thiết yếu
 
 | Trạng thái | Người dùng thấy gì? | Người dùng làm gì tiếp? |
 |---|---|---|
-| Câu hỏi chi tiêu bình thường | AI tóm tắt khoản chi, hiển thị dữ liệu dùng để tính | Xem báo cáo hoặc lọc giao dịch |
-| Dữ liệu thiếu | Nhãn "Dữ liệu chưa đủ", liệt kê giao dịch chưa đồng bộ | Chờ đồng bộ hoặc nhập thêm dữ liệu |
-| AI không nên tự trả lời | Banner "Câu hỏi tài chính nhạy cảm", không có nút "Làm theo lời khuyên" | Xem checklist, hỏi người tin cậy |
-| Cần chuyển sang người thật | Nút "Nói chuyện người thật" hoặc "Gửi câu hỏi cho hỗ trợ" | Chuyển sang kênh hỗ trợ phù hợp |
+| Hóa đơn đọc rõ | AI hiển thị số tiền, danh mục, độ tin cậy cao | Lưu nhanh hoặc sửa nếu cần |
+| Hóa đơn mờ / số tiền bất thường | Banner "Cần xác nhận số tiền", ảnh gốc, số tiền AI đọc được | Xác nhận 188.000đ, sửa số tiền hoặc chụp lại |
+| Báo cáo có giao dịch chờ xác nhận | Nhãn "Chưa tính vào tổng chắc chắn", liệt kê hóa đơn cần xác nhận | Mở từng hóa đơn để xác nhận |
+| OCR sai đã được user sửa | App lưu lịch sử chỉnh sửa và cập nhật tổng tháng | Xem tổng đã cập nhật |
 
 ---
 
 ## 4. Ghi chú cho từng thành phần
 
-- **Banner rủi ro cao**: nằm trên câu trả lời AI, dùng khi có từ khóa vay, nợ, trả góp, app tín dụng, bỏ thuốc, tiền học, tiền nhà, ăn uống cơ bản.
-- **Khung "AI có thể giúp"**: nhắc lại phạm vi an toàn: phân loại khoản chi, tìm dữ liệu thiếu, cảnh báo rủi ro, không quyết định thay user.
-- **Checklist an toàn**: gồm lãi/phí, hạn trả, khả năng trả nợ, khoản thiết yếu, người bị ảnh hưởng.
-- **CTA người thật**: không chỉ nói "hãy tự kiểm tra"; cung cấp bước tiếp theo cụ thể.
+- **Banner cần xác nhận**: nằm trên form lưu khoản chi, dùng khi OCR confidence thấp, ảnh mờ, hoặc số tiền bất thường.
+- **Khung ảnh gốc**: cho phép user phóng to vùng tổng tiền để đối chiếu.
+- **Nút sửa nhanh**: giúp đổi 1.888.000đ hoặc 138.000đ về 188.000đ mà không phải nhập lại toàn bộ giao dịch.
+- **Nhãn dữ liệu báo cáo**: phân biệt "đã xác minh" và "chờ xác nhận" khi user hỏi tổng chi cuối tháng.
 
 ---
 
@@ -80,5 +77,5 @@ User hỏi về vay/nợ/trả góp/cắt khoản thiết yếu
 
 - [x] Nhìn vào demo là hiểu rủi ro đang được chặn ở đâu.
 - [x] Có trạng thái khi AI không có đủ thông tin.
-- [x] Có cách chuyển sang người thật.
+- [x] Có cách sửa/xác nhận số tiền trước khi lưu.
 - [x] Câu chữ đủ ngắn để đặt trên màn hình thật.

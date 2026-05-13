@@ -35,9 +35,9 @@ artifact/
 
 | Thư mục | Lớp giải pháp | Nên chứng minh điều gì |
 |---|---|---|
-| `1-uiux/` | Giao diện | Người dùng thấy cảnh báo, nguồn, trạng thái xác minh, nút chuyển sang người thật |
-| `2-prompt/` | Chỉ dẫn AI | AI biết khi nào hỏi lại, từ chối, dẫn nguồn, hoặc chuyển sang người thật |
-| `3-architecture/` | Kiến trúc dữ liệu | AI lấy nguồn từ đâu, kiểm tra nguồn thế nào, xử lý ra sao khi thiếu nguồn |
+| `1-uiux/` | Giao diện | Người dùng thấy ảnh gốc, số tiền OCR, trạng thái xác minh và nút sửa/xác nhận |
+| `2-prompt/` | Chỉ dẫn AI | AI biết khi nào hỏi lại, nêu dữ liệu chưa chắc, dẫn nguồn, hoặc không dùng số chưa xác minh |
+| `3-architecture/` | Kiến trúc dữ liệu | AI lấy nguồn từ đâu, kiểm tra OCR confidence thế nào, xử lý ra sao khi thiếu nguồn |
 
 Ba lớp này phải bổ sung cho nhau. Không làm 3 biến thể giao diện giống nhau.
 
